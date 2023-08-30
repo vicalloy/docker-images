@@ -1,10 +1,5 @@
 FROM python:3.10
 
-# We set this environment variable and install git while building to try and
-# increase the stability of fetching the rust crates needed to build the
-# cryptography library
-ARG CARGO_NET_GIT_FETCH_WITH_CLI=true
-
 RUN set -ex \
     && rm -rf /etc/apt/sources.list.d \
     && echo 'deb https://mirrors.huaweicloud.com/debian/ bookworm main non-free non-free-firmware contrib' > /etc/apt/sources.list \

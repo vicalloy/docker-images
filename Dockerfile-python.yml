@@ -1,0 +1,42 @@
+FROM python:3.10
+
+# We set this environment variable and install git while building to try and
+# increase the stability of fetching the rust crates needed to build the
+# cryptography library
+ARG CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+RUN set -ex \
+    && rm -rf /etc/apt/sources.list.d \
+    && echo 'deb https://mirrors.huaweicloud.com/debian/ bookworm main non-free non-free-firmware contrib' > /etc/apt/sources.list \
+    && echo 'deb-src https://mirrors.huaweicloud.com/debian/ bookworm main non-free contrib' >> /etc/apt/sources.list \
+    && echo 'deb https://mirrors.huaweicloud.com/debian-security bookworm-security main' >> /etc/apt/sources.list \
+    && echo 'deb-src https://mirrors.huaweicloud.com/debian-security bookworm-security main' >> /etc/apt/sources.list \
+    && echo 'deb https://mirrors.huaweicloud.com/debian/ bookworm-updates main non-free contrib' >> /etc/apt/sources.list \
+    && echo 'deb-src https://mirrors.huaweicloud.com/debian/ bookworm-updates main non-free contrib' >> /etc/apt/sources.list \
+    && echo 'deb https://mirrors.huaweicloud.com/debian/ bookworm-backports main non-free contrib' >> /etc/apt/sources.list \
+    && echo 'deb-src https://mirrors.huaweicloud.com/debian/ bookworm-backports main non-free contrib' >> /etc/apt/sources.list
+
+RUN set -ex \
+ && mkdir /root/.pip \
+ && echo '[global]' > /root/.pip/pip.conf \
+ && echo 'index-url = https://mirrors.bfsu.edu.cn/pypi/web/simple/' >> /root/.pip/pip.conf
+
+RUN apt-get update && apt-get install -y \
+  pkg-config \
+  patchelf \
+  clang \
+  llvm \
+  ccache \
+  python3-dev \
+  rustc \
+  cargo \
+  build-essential \
+  libssl-dev \
+  libffi-dev \
+  git \
+  --no-install-recommends
+
+RUN pip install --upgrade pip setuptools
+RUN pip install cryptography==38.0.2
+RUN pip install --upgrade poetry
+

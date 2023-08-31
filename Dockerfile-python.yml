@@ -4,8 +4,6 @@ FROM python:3.10
 # increase the stability of fetching the rust crates needed to build the
 # cryptography library
 ARG CARGO_NET_GIT_FETCH_WITH_CLI=true
-# https://github.com/pyca/cryptography/issues/7891
-ARG CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 
 RUN set -ex \
@@ -40,6 +38,9 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends
 
 RUN pip install --upgrade pip setuptools
-RUN pip install cryptography==39.0.2
+# https://github.com/pyca/cryptography/issues/6347
+RUN --security=insecure mkdir -p /root/.cargo && \
+    chmod 777 /root/.cargo && mount -t tmpfs none /root/.cargo && \
+    pip3 install --no-cache-dir cryptography==39.0.2
 RUN pip install --upgrade poetry
 

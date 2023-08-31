@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:experimental
 FROM python:3.10
 
 # We set this environment variable and install git while building to try and

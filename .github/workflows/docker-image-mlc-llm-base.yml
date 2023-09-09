@@ -32,7 +32,6 @@ jobs:
           DOCKER_BUILDKIT: "1"
         with:
           file: mlc-llm-rk3588/Dockerfile-base
-          context: mlc-llm-rk3588
           push: true
           platforms: linux/arm64
           tags: vicalloy/mlc-llm-rk3588:base

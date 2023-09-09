@@ -38,7 +38,6 @@ jobs:
             MODEL=${{ github.event.inputs.model }}
             MODEL_LOCAL_ID=${{ github.event.inputs.model-local-id }}
           file: mlc-llm-rk3588/Dockerfile-base.yml
-          context: mlc-llm-rk3588
           push: true
           platforms: linux/arm64
           tags: vicalloy/mlc-llm-rk3588:${{ github.event.inputs.model-local-id }}

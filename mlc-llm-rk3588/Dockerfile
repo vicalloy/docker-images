@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:experimental
+# syntax=docker/dockerfile:1.4
 
 ARG MODEL
 ARG MODEL_LOCAL_ID

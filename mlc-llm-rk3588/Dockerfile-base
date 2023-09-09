@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:experimental
+# syntax=docker/dockerfile:1.4
 
 FROM scratch AS git-libmali
 ADD https://github.com/JeffyCN/mirrors.git#libmali /

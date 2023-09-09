@@ -4,9 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '.github/workflows/docker-image-python.yml'
-      - 'Dockerfile-python'
-
+      - '.github/workflows/docker-image-mlc-llm-base.yml'
+      - 'mlc-llm-rk3588/Dockerfile-base'
 
 jobs:
 
@@ -32,8 +31,8 @@ jobs:
         env:
           DOCKER_BUILDKIT: "1"
         with:
-          file: Dockerfile-python
+          file: mlc-llm-rk3588/Dockerfile-base
           push: true
-          platforms: linux/arm/v7,linux/arm64
-          tags: vicalloy/python:3.10
+          platforms: linux/arm64
+          tags: vicalloy/mlc-llm-rk3588:base
 

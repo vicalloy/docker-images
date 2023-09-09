@@ -5,7 +5,13 @@ on:
     branches: [ main ]
     paths:
       - '.github/workflows/docker-image-python.yml'
-      - 'Dockerfile-python'
+      - 'Dockerfile-python.yml'
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'ex: Llama-2-7b-chat-hf-q4f16_1'
+      model-local-id:
+        description: 'ex: FlagAlpha-Llama2-Chinese-7b-Chat-q4f16_1'
 
 
 jobs:
@@ -32,8 +38,12 @@ jobs:
         env:
           DOCKER_BUILDKIT: "1"
         with:
-          file: Dockerfile-python
+          # --build-arg bb=hello
+          build-args: |
+            MODEL=${{ github.event.inputs.model }}
+            MODEL_LOCAL_ID=${{ github.event.inputs.model-local-id }}
+          file: mlc-llm-rk3588/Dockerfile-base.yml
           push: true
-          platforms: linux/arm/v7,linux/arm64
-          tags: vicalloy/python:3.10
+          platforms: linux/arm64
+          tags: vicalloy/mlc-llm-rk3588:${{ github.event.inputs.model-local-id }}
 

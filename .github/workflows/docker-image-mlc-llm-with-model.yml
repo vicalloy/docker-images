@@ -1,11 +1,6 @@
 name: Docker Image Build
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - '.github/workflows/docker-image-python.yml'
-      - 'Dockerfile-python.yml'
   workflow_dispatch:
     inputs:
       model:

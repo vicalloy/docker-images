@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.4
-
 ARG MODEL
 ARG MODEL_LOCAL_ID
 # WARNING: Llama-2 requires 16GB board
@@ -22,15 +20,14 @@ ADD https://github.com/mlc-ai/binary-mlc-llm-libs.git /
 
 FROM scratch AS binary-mlc-llm-lib
 ARG MODEL
-COPY --link --from=git-binary-mlc-llm-libs /${MODEL}-mali.so /
+COPY --from=git-binary-mlc-llm-libs /${MODEL}-mali.so /
 
 # --------------------------------------------------------------------------- #
 
 FROM fetch AS fetch-model
 ARG MODEL_LOCAL_ID
 ARG GIT_URL="https://huggingface.co/mlc-ai/mlc-chat-${MODEL_LOCAL_ID}.git"
-RUN --mount=type=cache,sharing=locked,id=git-${MODEL_LOCAL_ID},target=/cache/${MODEL_LOCAL_ID} \
-    git clone \
+RUN git clone \
       --single-branch --depth 1 \
       --separate-git-dir=/cache/${MODEL_LOCAL_ID}/git \
       ${GIT_URL} \
@@ -40,14 +37,14 @@ RUN --mount=type=cache,sharing=locked,id=git-${MODEL_LOCAL_ID},target=/cache/${M
 # --------------------------------------------------------------------------- #
 
 FROM scratch AS model
-COPY --link --from=fetch-model /out/ /
+COPY --from=fetch-model /out/ /
 
 # --------------------------------------------------------------------------- #
 
 FROM vicalloy/mlc-llm-rk3588:base
 
-COPY --link --from=model / /mlc-llm/dist/prebuilt/
-COPY --link --from=build /out/bin/ /out/lib/ /mlc-llm/build/
+COPY --from=model / /mlc-llm/dist/prebuilt/
+COPY --from=build /out/bin/ /out/lib/ /mlc-llm/build/
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/
 WORKDIR /mlc-llm

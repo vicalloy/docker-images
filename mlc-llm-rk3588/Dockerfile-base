@@ -35,9 +35,7 @@ ADD https://github.com/mlc-ai/binary-mlc-llm-libs.git /
 FROM debian:bullseye AS opencl
 
 # based on https://mlc.ai/mlc-llm/docs/install/gpu.html#orange-pi-5-rk3588-based-sbc
-RUN --mount=type=cache,sharing=locked,id=apt-opencl,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=apt-opencl-cache,target=/var/cache/apt \
-    apt-get update \
+RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         mesa-opencl-icd \
         ocl-icd-opencl-dev \
@@ -63,9 +61,7 @@ CMD ["clinfo"]
 
 FROM debian:bullseye-backports AS build
 
-RUN --mount=type=cache,sharing=locked,id=apt-mlc-llm,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=apt-mlc-llm-cache,target=/var/cache/apt \
-    apt-get update \
+RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get -t bullseye-backports install -y --no-install-recommends \
         build-essential \
         ca-certificates \

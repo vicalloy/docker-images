@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1.4
-
 FROM scratch AS git-libmali
 ADD https://github.com/JeffyCN/mirrors.git#libmali /
 
@@ -11,12 +9,12 @@ ADD https://github.com/mlc-ai/mlc-llm.git /
 # --------------------------------------------------------------------------- #
 
 FROM scratch as libmali-driver
-COPY --link --from=git-libmali /lib/aarch64-linux-gnu/libmali-valhall-g610-*.so /
+COPY --from=git-libmali /lib/aarch64-linux-gnu/libmali-valhall-g610-*.so /
 
 # --------------------------------------------------------------------------- #
 
 FROM scratch AS libmali-firmware
-COPY --link --from=git-libmali /firmware/g610/mali_csffw.bin /
+COPY --from=git-libmali /firmware/g610/mali_csffw.bin /
 
 # --------------------------------------------------------------------------- #
 
@@ -51,8 +49,8 @@ RUN mkdir -p /etc/OpenCL/vendors \
     && echo "/usr/lib/libmali-valhall-g610-g6p0-x11-wayland-gbm.so" | tee /etc/OpenCL/vendors/mali.icd \
     ;
 
-COPY --link --from=libmali-firmware / /lib/firmware/
-COPY --link --from=libmali-driver / /usr/lib/
+COPY --from=libmali-firmware / /lib/firmware/
+COPY --from=libmali-driver / /usr/lib/
 RUN ldconfig
 
 CMD ["clinfo"]
@@ -74,7 +72,7 @@ RUN apt-get update \
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
 
-COPY --link --from=git-mlc-llm / /mlc-llm
+COPY --from=git-mlc-llm / /mlc-llm
 COPY ./mlc-llm-rk3588/config.cmake /mlc-llm/build/
 
 # based on https://blog.mlc.ai/2023/08/09/GPU-Accelerated-LLM-on-Orange-Pi
@@ -88,7 +86,7 @@ RUN cd /mlc-llm/build \
 
 FROM opencl
 
-COPY --link --from=build /out/bin/ /out/lib/ /mlc-llm/build/
+COPY --from=build /out/bin/ /out/lib/ /mlc-llm/build/
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/
 WORKDIR /mlc-llm

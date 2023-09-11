@@ -27,7 +27,8 @@ COPY --from=git-binary-mlc-llm-libs /${MODEL}-mali.so /
 FROM fetch AS fetch-model
 ARG MODEL_LOCAL_ID
 ARG GIT_URL="https://huggingface.co/mlc-ai/mlc-chat-${MODEL_LOCAL_ID}.git"
-RUN mkdir -p /cache/ && git clone \
+RUN mkdir -p /cache/${MODEL_LOCAL_ID}/ \
+    && git clone \
       --single-branch --depth 1 \
       --separate-git-dir=/cache/${MODEL_LOCAL_ID}/git \
       ${GIT_URL} \

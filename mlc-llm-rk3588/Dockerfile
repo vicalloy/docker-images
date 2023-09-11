@@ -43,8 +43,8 @@ COPY --from=fetch-model /out/ /
 
 FROM vicalloy/mlc-llm-rk3588:base
 
+COPY --link --from=binary-mlc-llm-lib / /mlc-llm/dist/prebuilt/lib/
 COPY --from=model / /mlc-llm/dist/prebuilt/
-COPY --from=build /out/bin/ /out/lib/ /mlc-llm/build/
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/
 WORKDIR /mlc-llm

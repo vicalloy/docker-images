@@ -1,4 +1,4 @@
-name: Docker Image Build
+name: Build vicalloy/mlc-llm-rk3588:base
 
 on:
   push:

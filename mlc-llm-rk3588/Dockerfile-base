@@ -89,7 +89,8 @@ RUN cd /mlc-llm/build \
 FROM opencl
 
 RUN pip3 install numpy torch transformers scipy timm \
-    gradio fastapi uvicorn shortuuid
+    gradio fastapi uvicorn shortuuid \
+    --break-system-packages
 
 RUN mkdir -p /mlc-llm/python/
 COPY --from=build /out/bin/ /out/lib/ /mlc-llm/build/

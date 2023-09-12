@@ -12,7 +12,7 @@ if [[ $@ == *"mlc_chat.rest"* ]]; then
 fi
 
 if [[ $@ == "" ]]; then
-  cmd="./build/mlc_chat_cli --device mali --local-id ${MODEL_LOCAL_ID}"
+  cmd="./build/mlc_chat_cli --device mali --model ${MODEL_LOCAL_ID}"
 fi
 
 # echo "${cmd}"

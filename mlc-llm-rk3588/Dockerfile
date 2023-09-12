@@ -46,6 +46,7 @@ FROM vicalloy/mlc-llm-rk3588:base
 
 COPY --link --from=binary-mlc-llm-lib / /mlc-llm/dist/prebuilt/lib/
 COPY --from=model / /mlc-llm/dist/prebuilt/
+COPY ./mlc-llm-rk3588/entrypoint.sh /entrypoint.sh
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/
 WORKDIR /mlc-llm
@@ -54,4 +55,5 @@ WORKDIR /mlc-llm
 # shell to resolve on start
 ARG MODEL_LOCAL_ID
 ENV MODEL_LOCAL_ID=${MODEL_LOCAL_ID}
-CMD ["sh", "-c", "./build/mlc_chat_cli --local-id ${MODEL_LOCAL_ID} --device mali"]
+
+ENTRYPOINT ["/entrypoint.sh"]

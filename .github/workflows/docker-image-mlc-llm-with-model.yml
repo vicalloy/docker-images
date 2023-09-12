@@ -33,7 +33,6 @@ jobs:
         env:
           DOCKER_BUILDKIT: "1"
         with:
-          # --build-arg bb=hello
           build-args: |
             MODEL=${{ github.event.inputs.model }}
             MODEL_LOCAL_ID=${{ github.event.inputs.model-local-id }}

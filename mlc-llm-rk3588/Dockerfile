@@ -38,14 +38,14 @@ RUN mkdir -p /cache/${MODEL_LOCAL_ID}/ \
 # --------------------------------------------------------------------------- #
 
 FROM scratch AS model
-COPY --from=fetch-model /out/ /
+COPY --link --from=fetch-model /out/ /
 
 # --------------------------------------------------------------------------- #
 
 FROM vicalloy/mlc-llm-rk3588:base
 
 COPY --link --from=binary-mlc-llm-lib / /mlc-llm/dist/prebuilt/lib/
-COPY --from=model / /mlc-llm/dist/prebuilt/
+COPY --link --from=model / /mlc-llm/dist/prebuilt/
 COPY ./mlc-llm-rk3588/entrypoint.sh /entrypoint.sh
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/

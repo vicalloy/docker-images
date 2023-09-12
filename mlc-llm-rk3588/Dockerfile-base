@@ -30,7 +30,7 @@ ADD https://github.com/mlc-ai/binary-mlc-llm-libs.git /
 
 # --------------------------------------------------------------------------- #
 
-FROM debian:bullseye AS opencl
+FROM debian:bookworm AS opencl
 
 # based on https://mlc.ai/mlc-llm/docs/install/gpu.html#orange-pi-5-rk3588-based-sbc
 RUN apt-get update \
@@ -43,6 +43,8 @@ RUN apt-get update \
         libwayland-server0 \
         libx11-xcb1 \
         clinfo \
+        python3 \
+        python3-pip \
     ;
 
 RUN mkdir -p /etc/OpenCL/vendors \
@@ -57,10 +59,10 @@ CMD ["clinfo"]
 
 # --------------------------------------------------------------------------- #
 
-FROM debian:bullseye-backports AS build
+FROM debian:bookworm AS build
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get -t bullseye-backports install -y --no-install-recommends \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         cmake \
@@ -86,7 +88,15 @@ RUN cd /mlc-llm/build \
 
 FROM opencl
 
+RUN pip3 install numpy torch transformers scipy timm \
+    gradio fastapi uvicorn shortuuid
+
+RUN mkdir -p /mlc-llm/python/
 COPY --from=build /out/bin/ /out/lib/ /mlc-llm/build/
+COPY --from=git-mlc-llm /3rdparty/tvm/python/tvm/ /mlc-llm/python/tvm/
+COPY --from=git-mlc-llm /python/mlc_chat/ /mlc-llm/python/mlc_chat/
+COPY --from=git-mlc-llm /mlc_llm /mlc-llm/python/mlc_llm/
 
 ENV LD_LIBRARY_PATH=/mlc-llm/build/
+ENV PYTHONPATH=/mlc-llm/python/
 WORKDIR /mlc-llm

@@ -2,6 +2,8 @@ build-mlc-llm:MODEL=Llama-2-7b-chat-hf-q4f16_1
 build-mlc-llm:MODEL_LOCAL_ID=FlagAlpha-Llama2-Chinese-7b-Chat-q4f16_1
 build-mlc-llm-FlagAlpha-Llama2-Chinese-7b-Chat-q4f16_1: build-mlc-llm
 
+# If model is too large for github actions, you will get `no space left on device` error.
+# You should build it in your computer.
 build-mlc-llm:
 	DOCKER_BUILDKIT=1 \
 	docker build \

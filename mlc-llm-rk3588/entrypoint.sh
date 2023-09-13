@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cmd=$@
 
 # python3 -m mlc_chat.gradio --artifact-path ARTIFACT_PATH [--device DEVICE] [--port PORT_NUMBER] [--share]
@@ -15,5 +15,5 @@ if [[ $@ == "" ]]; then
   cmd="./build/mlc_chat_cli --device mali --model ${MODEL_LOCAL_ID}"
 fi
 
-# echo "${cmd}"
-exec "${cmd}"
+# echo ${cmd}
+exec ${cmd}

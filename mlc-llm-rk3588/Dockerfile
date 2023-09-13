@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1-labs
+
 ARG MODEL
 ARG MODEL_LOCAL_ID
 # WARNING: Llama-2 requires 16GB board

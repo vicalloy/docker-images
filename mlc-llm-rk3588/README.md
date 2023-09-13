@@ -25,3 +25,9 @@ docker run --rm -it --privileged \
     python3 -m mlc_chat.gradio \
     [--port PORT_NUMBER] [--share]
 ```
+
+## Reference
+
+- [GPU-Accelerated LLM on ARM64...in Docker](https://milas.dev/blog/mali-g610-rk3588-mlc-llm-docker/)
+- [GPU-Accelerated LLM on a $100 Orange Pi](https://blog.mlc.ai/2023/08/09/GPU-Accelerated-LLM-on-Orange-Pi)
+- [MLC LLM on RK3588](https://mlc.ai/mlc-llm/docs/install/gpu.html#orange-pi-5-rk3588-based-sbc)
